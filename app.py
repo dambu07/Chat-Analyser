@@ -1,38 +1,52 @@
 import pandas as pd
 import streamlit as st
-from preprocess import preprocess_data
+
 # from preprocess import analyze_format
 import helper
+from preprocess import preprocess_data
 
-import streamlit as st
 
 def sidebar_instructions():
     st.sidebar.write("***Click the X button above to close the instructions guide.***")
     st.sidebar.divider()
     st.sidebar.title("Quick Start Guide")
 
-    st.sidebar.header("Step 1: Export & Upload Your Chat")
-    st.sidebar.write("- Export chat from WhatsApp as a .txt file.")
-    st.sidebar.write("- Tap ⋮ or ⋯ at the top of the screen, select 'More', then 'Export chat'.")
+    _extracted_from_sidebar_instructions_6(
+        "Step 1: Export & Upload Your Chat",
+        "- Export chat from WhatsApp as a .txt file.",
+        "- Tap ⋮ or ⋯ at the top of the screen, select 'More', then 'Export chat'.",
+    )
     st.sidebar.write("- Upload the .txt file on the home page. Click 'Upload Chat File'.")
 
-    st.sidebar.header("Step 2: Select Date Format")
-    st.sidebar.write("- Choose the appropriate date format of your chat by selecting the corresponding radio button.")
-    st.sidebar.write("- If numerous errors occur, try selecting a format that results in zero errors.")
-
+    _extracted_from_sidebar_instructions_6(
+        "Step 2: Select Date Format",
+        "- Choose the appropriate date format of your chat by selecting the corresponding radio button.",
+        "- If numerous errors occur, try selecting a format that results in zero errors.",
+    )
     st.sidebar.header("Step 3: Select Analysis Option")
     st.sidebar.write("- Click on the radio button next to your preferred analysis option.")
 
-    st.sidebar.header("Step 4: Analyze Chat")
-    st.sidebar.write("- Choose a user from the dropdown menu.")
-    st.sidebar.write("- Click 'Show Analytics'.")
+    _extracted_from_sidebar_instructions_6(
+        "Step 4: Analyze Chat",
+        "- Choose a user from the dropdown menu.",
+        "- Click 'Show Analytics'.",
+    )
     st.sidebar.write("- Click on the expanders to reveal specific analysis insights (Overview, Detailed Analysis, Temporal Analysis).")
 
     st.sidebar.write("OR")
 
-    st.sidebar.header("Step 4: Predict Message Sender")
-    st.sidebar.write("- Input a message to predict the sender and press Enter.")
-    st.sidebar.write("- Click 'Train the Model Again' to retrain if the accuracy is low.")
+    _extracted_from_sidebar_instructions_6(
+        "Step 4: Predict Message Sender",
+        "- Input a message to predict the sender and press Enter.",
+        "- Click 'Train the Model Again' to retrain if the accuracy is low.",
+    )
+
+
+# TODO Rename this here and in `sidebar_instructions`
+def _extracted_from_sidebar_instructions_6(arg0, arg1, arg2):
+    st.sidebar.header(arg0)
+    st.sidebar.write(arg1)
+    st.sidebar.write(arg2)
 
 
 
@@ -48,7 +62,7 @@ st.title('WhatsApp Chat Analyser')
 st.text('Explore your chat data and predict message senders.')
 
 # st.set_sidebar_property("expanded", True)
-sidebar_instructions()
+# sidebar_instructions()
 
 #
 # # Sidebar
@@ -114,7 +128,7 @@ if uploaded_file is not None:
         st.session_state.df = preprocess_data(data , 'dmy')
         st.session_state['last_processed_file'] = uploaded_file
         st.session_state['last_date'] = 'dd/mm/yyyy'
-        # st.session_state['last_hour'] = '12hr'
+        st.session_state['last_hour'] = '12hr'
         st.session_state.accuracy = None
         st.session_state.model = None
 
@@ -365,9 +379,9 @@ if uploaded_file is not None:
         st.divider()
 
         st.header('Input your message')
-        user_input = st.text_input("Type your message below and press 'Enter' or click '↲' to check the prediction:")
-
-        if user_input:
+        if user_input := st.text_input(
+            "Type your message below and press 'Enter' or click '↲' to check the prediction:"
+        ):
             prediction, probability = helper.predict(st.session_state.model,
                                                      user_input)  # Replace with your prediction function
             st.subheader('Prediction Result')
@@ -377,4 +391,4 @@ if uploaded_file is not None:
             st.write(f'📊 Probability: {probability * 100:.2f}%')
 
 st.markdown('---')
-st.caption('WhatsApp Chat Analyzer v1.0 | Developed by Sarvesh_More')
+st.caption('Developed by Raavi Rao')
